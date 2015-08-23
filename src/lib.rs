@@ -18,3 +18,6 @@ pub mod op;
 pub mod udp;
 pub mod error;
 pub mod serialize;
+
+extern crate rustlex;
+#[macro_use] extern crate log;

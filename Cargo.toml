@@ -1,6 +1,6 @@
 [package]
 name = "trust-dns"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Benjamin Fry <benjaminfry@me.com>"]
 
 # A short blurb about the package. This is not rendered in any format when
@@ -26,6 +26,16 @@ keywords = ["DNS", "dns", "host", "BIND", "dig", "named", "dnssec"]
 # be separated with a `/`
 license = "Apache-2.0"
 
+# Custom build script
+build = "build.rs"
+
+[build-dependencies]
+rustlex_codegen = { version = "*", features = ["with-syntex"] }
+syntex          = { version = "*" }
+
 [dependencies]
+log = "^0.3.1"
+rustlex_codegen = { version = "*", features = ["with-syntex"] }
+rustlex = "*"
 
 # rustc-serialize = "^0.3.16"

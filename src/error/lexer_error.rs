@@ -13,5 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-pub mod binary;
-pub mod txt;
+use std::error::Error;
+use std::fmt;
+
+#[derive(Debug)]
+pub enum LexerError {
+  EOF,
+}
+
+impl fmt::Display for LexerError {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    match *self {
+      LexerError::EOF => write!(f, "End of input reached before next read could complete"),
+    }
+  }
+}
+
+impl Error for LexerError {
+  fn description(&self) -> &str {
+    match *self {
+      LexerError::EOF => "End of input",
+    }
+  }
+
+  fn cause(&self) -> Option<&Error> {
+    match *self {
+      _ => None,
+    }
+  }
+}
