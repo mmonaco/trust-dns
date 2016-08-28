@@ -42,7 +42,7 @@ use std::fs;
 use std::fs::File;
 use std::path::{Path, PathBuf};
 use std::collections::BTreeMap;
-use std::net::{Ipv4Addr, Ipv6Addr};
+use std::net::{IpAddr, Ipv6Addr};
 use std::net::ToSocketAddrs;
 
 use chrono::{Duration};
@@ -229,17 +229,13 @@ pub fn main() {
   }
 
   // TODO support all the IPs asked to listen on...
-  let listen_addr_v4: Ipv4Addr = *config.get_listen_addrs_ipv4().first().unwrap_or(&Ipv4Addr::new(0,0,0,0));
-  let listen_addr_v6: Ipv6Addr = *config.get_listen_addrs_ipv6().first().unwrap_or(&Ipv6Addr::new(0,0,0,0, 0,0,0,0));
+  let listen_addr: IpAddr = *config.get_listen_addrs().first().unwrap_or(&IpAddr::V6(Ipv6Addr::new(0,0,0,0, 0,0,0,0)));
   let listen_port: u16 = args.flag_port.unwrap_or(config.get_listen_port());
 
-  let addr_v4 = (listen_addr_v4, listen_port).to_socket_addrs().unwrap().next().unwrap();
-  let addr_v6 = (listen_addr_v6, listen_port).to_socket_addrs().unwrap().next().unwrap();
+  let addr = (listen_addr, listen_port).to_socket_addrs().unwrap().next().unwrap();
 
-  let udp_sockets: Vec<UdpSocket> = vec![UdpSocket::bound(&addr_v4).unwrap(),
-                                         UdpSocket::bound(&addr_v6).unwrap()];
-  let tcp_listeners: Vec<TcpListener> = vec![TcpListener::bind(&addr_v4).unwrap(),
-                                             TcpListener::bind(&addr_v6).unwrap()];
+  let udp_sockets: Vec<UdpSocket> = vec![UdpSocket::bound(&addr).unwrap()];
+  let tcp_listeners: Vec<TcpListener> = vec![TcpListener::bind(&addr).unwrap()];
 
 
   // now, run the server, based on the config

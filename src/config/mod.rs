@@ -20,7 +20,7 @@ use std::io::Read;
 use std::fs::File;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
-use std::net::{Ipv4Addr, Ipv6Addr};
+use std::net::IpAddr;
 
 use log::LogLevel;
 use rustc_serialize::Decodable;
@@ -36,8 +36,7 @@ static DEFAULT_PATH: &'static str = "/var/named"; // TODO what about windows (do
 
 #[derive(RustcDecodable, Debug)]
 pub struct Config {
-  listen_addrs_ipv4: Vec<String>,
-  listen_addrs_ipv6: Vec<String>,
+  listen_addrs: Vec<String>,
   listen_port: Option<u16>,
   log_level: Option<String>,
   directory: Option<String>,
@@ -53,8 +52,7 @@ impl Config {
     toml.parse()
   }
 
-  pub fn get_listen_addrs_ipv4(&self) -> Vec<Ipv4Addr> { self.listen_addrs_ipv4.iter().map(|s| s.parse().unwrap()).collect() }
-  pub fn get_listen_addrs_ipv6(&self) -> Vec<Ipv6Addr> { self.listen_addrs_ipv6.iter().map(|s| s.parse().unwrap()).collect() }
+  pub fn get_listen_addrs(&self) -> Vec<IpAddr> { self.listen_addrs.iter().map(|s| s.parse().unwrap()).collect() }
   pub fn get_listen_port(&self) -> u16 { self.listen_port.unwrap_or(DEFAULT_PORT) }
   pub fn get_log_level(&self) -> LogLevel {
     if let Some(ref level_str) = self.log_level {

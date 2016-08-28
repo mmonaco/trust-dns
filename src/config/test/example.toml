@@ -18,9 +18,7 @@
 
 ## listen_addrs: address on which to listen for incoming connections
 ##  this can be a list of ipv4 or ipv6 addresses
-# listen_addrs_ipv4 = ["0.0.0.0"]
-
-# listen_addrs_ipv6 = ["::0"]
+# listen_addrs = ["::"]
 
 ## listen_port: port on which to list
 # listen_port = 53
